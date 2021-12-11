@@ -1,0 +1,48 @@
+version: '3.8'
+
+volumes:
+    data: {}
+    web: {}
+
+services:
+  nginx:
+    build: "./requirements/nginx"
+    container_name: nginx
+    restart: always
+    volumes:
+      - web:/var/www/html
+    ports:
+      - "443:443"
+    networks:
+      - intra
+    tty: true
+  mariadb:
+    build: "./requirements/mariadb"
+    container_name: mariadb
+    restart: always
+    volumes:
+      - data:/var/lib/mysql
+    networks:
+      - intra
+    env_file:
+      - ".env"
+    expose:
+      - "3360"
+    tty: true
+  wordpress:
+    build: "./requirements/wordpress"
+    container_name: wordpress
+    restart: always
+    volumes:
+      - web:/var/www/html
+    networks:
+      - intra
+    env_file:
+      - ".env"
+    expose:
+      - "9000"
+    tty: true
+
+networks:
+  intra:
+    driver: bridge
