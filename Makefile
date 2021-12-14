@@ -1,13 +1,12 @@
-
 all :
-	docker-compose -f ./srcs/docker-compose.yml up -d --build
-#-p inception
+	docker-compose -p inception -f ./srcs/docker-compose.yml up -d --build
+
 
 clean :
-	docker-compose -f ./srcs/docker-compose.yml down
+	rm -rf ./srcs/web ./srcs/data
 
-fclean :
-	docker-compose -f ./srcs/docker-compose.yml down --rmi all --volumes
+fclean : clean
+	docker-compose -p inception -f ./srcs/docker-compose.yml down --rmi all --volumes
 
 re : fclean all
 

@@ -1,17 +1,12 @@
 #!/bin/bash
 
-#       RUN service mysql start && \
-#     mysql -e "CREATE DATABASE wordpress_db; \
-#     CREATE USER 'hyunlee'@'%' IDENTIFIED BY 'password'; \
-#     CREATE USER 'user1'@'%' IDENTIFIED BY 'password'; \
-#     GRANT ALL ON wordpress_db.* TO 'hyunlee'@'%'; \
-#     FLUSH PRIVILEGES;"
-
 service mysql start
-mysql -e "CREATE DATABASE ${DATABASE_NAME}; \
-CREATE USER '${ADMIN_NAME}'@'%' IDENTIFIED BY '${ADMIN_PASSWORD}'; \
-GRANT ALL ON ${DATABASE_NAME}.* TO '${ADMIN_NAME}'@'%'; \
+mysql -e "CREATE DATABASE IF NOT EXISTS ${WP_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci; \
+CREATE USER '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}'; \
+GRANT ALL ON ${WP_DB_NAME}.* TO '${MYSQL_USER}'@'%'; \
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}'; \
 FLUSH PRIVILEGES;"
+mysqladmin -uroot -p$MYSQL_ROOT_PASSWORD shutdown
 
-# mysqld
-/bin/bash
+exec /usr/bin/mysqld_safe
+# /bin/bash

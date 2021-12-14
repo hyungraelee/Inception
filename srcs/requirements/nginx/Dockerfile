@@ -6,6 +6,7 @@ RUN apt-get -y update && \
     apt-get -y install nginx && \
     rm -rf /var/lib/apt/list/*
 
+
 RUN mkdir certs; \
     mv inception.crt /certs/inception.crt; \
     mv inception.key /certs/inception.key; \

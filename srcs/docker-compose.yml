@@ -1,8 +1,8 @@
-version: '3.8'
+version: '2'
 
-volumes:
-    data: {}
-    web: {}
+# volumes:
+#     data: {}
+    # web:
 
 services:
   nginx:
@@ -10,7 +10,8 @@ services:
     container_name: nginx
     restart: always
     volumes:
-      - web:/var/www/html
+      - ./home/hyunlee/data/data:/var/www/html
+      # - ./web:/var/www/html
     ports:
       - "443:443"
     networks:
@@ -21,7 +22,8 @@ services:
     container_name: mariadb
     restart: always
     volumes:
-      - data:/var/lib/mysql
+      - ./home/hyunlee/data/db_data:/var/lib/mysql
+      # - data:/var/lib/mysql
     networks:
       - intra
     env_file:
@@ -34,7 +36,8 @@ services:
     container_name: wordpress
     restart: always
     volumes:
-      - web:/var/www/html
+      - ./home/hyunlee/data/data:/var/www/html
+      # - ./web:/var/www/html
     networks:
       - intra
     env_file:
