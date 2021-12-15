@@ -15,7 +15,7 @@ RUN apt-get -y update && \
 
 RUN service php7.3-fpm start
 
-RUN mkdir -p ./var/www/html && \
+RUN mkdir -p ./var/www/wordpress && \
     wget https://wordpress.org/latest.tar.gz && \
     tar -xvf latest.tar.gz
 

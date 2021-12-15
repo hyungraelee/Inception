@@ -1,51 +1,60 @@
 version: '2'
 
-# volumes:
-#     data: {}
-    # web:
-
 services:
   nginx:
     build: "./requirements/nginx"
     container_name: nginx
     restart: always
     volumes:
-      - ./home/hyunlee/data/data:/var/www/html
-      # - ./web:/var/www/html
+      - wp:/var/www/html
     ports:
       - "443:443"
     networks:
       - intra
-    tty: true
+    # tty: true
   mariadb:
     build: "./requirements/mariadb"
     container_name: mariadb
     restart: always
     volumes:
-      - ./home/hyunlee/data/db_data:/var/lib/mysql
-      # - data:/var/lib/mysql
+      - db:/var/lib/mysql
     networks:
       - intra
     env_file:
       - ".env"
     expose:
-      - "3360"
-    tty: true
+      - "3306"
+    # tty: true
   wordpress:
     build: "./requirements/wordpress"
     container_name: wordpress
     restart: always
     volumes:
-      - ./home/hyunlee/data/data:/var/www/html
-      # - ./web:/var/www/html
+      - wp:/var/www/wordpress
     networks:
       - intra
     env_file:
       - ".env"
     expose:
       - "9000"
-    tty: true
+    # tty: true
 
 networks:
   intra:
     driver: bridge
+
+volumes:
+  wp:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/hyunlee/data/wp'
+      # device: '/Users/hyunlee/Desktop/Inception/wp'
+  db:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/hyunlee/data/db'
+      # device: '/Users/hyunlee/Desktop/Inception/db'
