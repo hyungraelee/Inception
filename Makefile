@@ -5,22 +5,24 @@ UP = up
 DOWN = down
 DB_DATA = /home/hyunlee/data/db
 WP_DATA = /home/hyunlee/data/wp
+# DB_DATA = ./db
+# WP_DATA = ./wp
+COMPOSE = $(DOCKER_COMP) -p $(NAME) -f $(YML)
 
 all :
 	mkdir $(DB_DATA) $(WP_DATA)
-	$(DOCKER_COMP) -p $(NAME) -f $(YML) $(UP) -d --build
-
-clean :
-	rm -rf $(DB_DATA) $(WP_DATA)
+	$(COMPOSE) $(UP) -d --build
 
 down :
-	$(DOCKER_COMP) -p $(NAME) -f $(YML) $(DOWN)
-up:
-	$(DOCKER_COMP) -p $(NAME) -f $(YML) $(UP) -d
+	$(COMPOSE) $(DOWN)
 
-fclean : clean
-	$(DOCKER_COMP) -p $(NAME) -f  $(YML) $(DOWN) --rmi all --volumes
+up:
+	$(COMPOSE) $(UP) -d
+
+fclean :
+	$(COMPOSE) $(DOWN) --rmi all --volumes
+	rm -rf $(DB_DATA) $(WP_DATA)
 
 re : fclean all
 
-.PHONY : all clean fclean re
+.PHONY : all down up fclean re

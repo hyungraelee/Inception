@@ -1,5 +1,7 @@
 #!/bin/bash
+
 if [ ! -d /var/lib/mysql/$WP_DB_NAME ]; then
+    # set mysql
     service mysql start
     mysql -e "CREATE DATABASE IF NOT EXISTS ${WP_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci; \
     CREATE USER '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}'; \
@@ -9,4 +11,4 @@ if [ ! -d /var/lib/mysql/$WP_DB_NAME ]; then
     mysqladmin -uroot -p$MYSQL_ROOT_PASSWORD shutdown
 fi
 
-exec /usr/bin/mysqld_safe
+exec mysqld_safe

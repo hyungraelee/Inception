@@ -10,19 +10,18 @@ RUN apt-get -y update && \
     curl \
     php-mysql \
     php-mbstring \
-    php-xml \
-    sendmail
+    php-xml
 
-RUN service php7.3-fpm start
-
-RUN mkdir -p ./var/www/wordpress && \
+RUN mkdir -p ./var/www/html && \
     wget https://wordpress.org/latest.tar.gz && \
     tar -xvf latest.tar.gz
 
-ADD https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar ./
-
-RUN chmod +x wp-cli.phar && \
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
+
+RUN cp www.conf /etc/php/7.3/fpm/pool.d/www.conf && \
+    service php7.3-fpm start
 
 EXPOSE 9000
 
