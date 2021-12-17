@@ -10,6 +10,7 @@ WP_DATA = /home/hyunlee/data/wp
 COMPOSE = $(DOCKER_COMP) -p $(NAME) -f $(YML)
 
 all :
+	mkdir /home/hyunlee/data
 	mkdir $(DB_DATA) $(WP_DATA)
 	$(COMPOSE) $(UP) -d --build
 
@@ -21,7 +22,7 @@ up:
 
 fclean :
 	$(COMPOSE) $(DOWN) --rmi all --volumes
-	rm -rf $(DB_DATA) $(WP_DATA)
+	rm -rf /home/hyunlee/data
 
 re : fclean all
 
